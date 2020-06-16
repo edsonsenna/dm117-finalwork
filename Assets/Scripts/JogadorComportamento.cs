@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 [RequireComponent(typeof(Rigidbody))]
 public class JogadorComportamento : MonoBehaviour
@@ -12,6 +13,9 @@ public class JogadorComportamento : MonoBehaviour
     }
 
     public TipoMovimentoHorizontal movimentoHorizontal = TipoMovimentoHorizontal.Acelerometro;
+
+    private const float maxVel = 15f;
+    private const float minVel = 0f;
 
     /// <summary>
     /// Uma refrencia para o componente Rigidbody
@@ -125,12 +129,38 @@ public class JogadorComportamento : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Manipula a aceleraçao da bolinha.
+    /// </summary>
+    private void SetVelocidadeRolamento()
+    {
+        var direcaoY = Input.GetAxis("Vertical");
+        if (direcaoY > 0)
+        {
+            if(velocidadeRolamento < maxVel)
+            {
+                velocidadeRolamento++;
+             
+            }
+            print("Aumentando " + direcaoY + " " + velocidadeRolamento);
+        } else
+        {
+            if(velocidadeRolamento > minVel)
+            {
+                velocidadeRolamento--;
+            } else
+            {
+                
+            }
+            print("Diminuindo " + direcaoY + " " + velocidadeRolamento);
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
     {
         //Se o jogo esta pauasado nao faça nada
-
         if(MenuPauseComp.pausado)
         {
             return;
@@ -138,6 +168,7 @@ public class JogadorComportamento : MonoBehaviour
 
         // -1 Esquerda, 1 Direita e 0 Parado. GetAxis
         var velocidadeHorizontal = Input.GetAxis("Horizontal") * velocidadeEsquiva;
+        SetVelocidadeRolamento();
       
 
 #if UNITY_STANDALONE || UNITY_EDITOR || UNITY_WEBPLAYER
