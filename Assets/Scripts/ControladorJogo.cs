@@ -70,15 +70,30 @@ public class ControladorJogo : MonoBehaviour
 
         if(pontosObstaculo.Count > 0)
         {
-            // Vamos pegar um ponto aleatorio (pontosObstaculo)
-            var pontosSpawn = pontosObstaculo[Random.Range(0, pontosObstaculo.Count)];
-            //Vamos guarsar a posicao desse ponto de spawn
-            var obsSpawnPos = pontosSpawn.transform.position;
-            // Quaternion.identity quer dizer q o obj esta parado.
-            // Criando um novo obstaculo
-            var novoObs = Instantiate(obstaculo, obsSpawnPos, Quaternion.identity);
-            //Fazendo o novo obstaculo ser filho de TileBasico.PontoSpawn
-            novoObs.SetParent(pontosSpawn.transform);
+
+            var tempPositions = pontosObstaculo;
+
+            var defeatIndex = Random.Range(0, tempPositions.Count);
+            var defeatObsSpawn = tempPositions[defeatIndex];
+
+            var defeatPos = defeatObsSpawn.transform.position;
+
+            obstaculo.GetComponent<ObstaculoComp>().isDefeatObject = true;
+            var novoObs = Instantiate(obstaculo, defeatPos, Quaternion.identity);
+
+            novoObs.SetParent(defeatObsSpawn.transform);
+
+            tempPositions.RemoveAt(defeatIndex);
+
+            var victoryIndex = Random.Range(0, tempPositions.Count);
+            var victoryObsSpawn = tempPositions[victoryIndex];
+
+            var victoryPos = victoryObsSpawn.transform.position;
+
+            obstaculo.GetComponent<ObstaculoComp>().isDefeatObject = false;
+            var victoryPosition = Instantiate(obstaculo, victoryPos, Quaternion.identity);
+
+
         }
     }
 

@@ -9,7 +9,10 @@ public class ObstaculoComp : MonoBehaviour
 
     [Tooltip("Quanto tempo antes de reiniciar o jogo")]
     public float tempoEspera = 2.0f;
+
     public GameObject explosao;
+
+    public bool isDefeatObject = true;
 
     [Tooltip("Acesso para o componente MeshRenderer")]
     MeshRenderer mr = new MeshRenderer();
@@ -21,6 +24,9 @@ public class ObstaculoComp : MonoBehaviour
     /// Variavel referencia para o jogador
     /// </summary>
     private GameObject jogador;
+
+    private Material victoryMaterial;
+    private Material defeatMaterial;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -125,8 +131,28 @@ public class ObstaculoComp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        victoryMaterial = Resources.Load("VictoryColor", typeof(Material)) as Material;
+        defeatMaterial = Resources.Load("DefeatColor", typeof(Material)) as Material;
+
         mr = GetComponent<MeshRenderer>();
         bc = GetComponent<BoxCollider>();
+
+
+
+        if(this.isDefeatObject)
+        {
+            print("If");
+            this.gameObject.GetComponent<Renderer>().material = this.defeatMaterial;
+        }
+        else
+        {
+            print("Else");
+            this.gameObject.GetComponent<Renderer>().material = this.victoryMaterial;
+        }
+
+        print(this.isDefeatObject);
+
     }
 
     // Update is called once per frame
