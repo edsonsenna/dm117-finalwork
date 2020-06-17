@@ -142,17 +142,12 @@ public class ObstaculoComp : MonoBehaviour
 
         if(this.isDefeatObject)
         {
-            print("If");
             this.gameObject.GetComponent<Renderer>().material = this.defeatMaterial;
         }
         else
         {
-            print("Else");
             this.gameObject.GetComponent<Renderer>().material = this.victoryMaterial;
         }
-
-        print(this.isDefeatObject);
-
     }
 
     // Update is called once per frame
