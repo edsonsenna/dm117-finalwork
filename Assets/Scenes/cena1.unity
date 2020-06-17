@@ -1477,7 +1477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movimentoHorizontal: 0
   velocidadeEsquiva: 5
-  velocidadeRolamento: 5
+  velocidadeRolamento: 8
   minDisSwipe: 2
   swipeMove: 2
   explosao: {fileID: 2665892493232752885, guid: 2eb5b5204a3974193a4c0e38f9832d6c,

@@ -28,17 +28,52 @@ public class ObstaculoComp : MonoBehaviour
     private Material victoryMaterial;
     private Material defeatMaterial;
 
-    private void OnCollisionEnter(Collision collision)
+    public void BeforeTouch(GameObject touched)
     {
         // Verifica se o jogador.
-        if (collision.gameObject.GetComponent<JogadorComportamento>())
+        if (this.isDefeatObject)
         {
             // Vamos esconder o jogador ao inves de destruir.
-            collision.gameObject.SetActive(false);
-            jogador = collision.gameObject;
+            touched.SetActive(false);
             //Destroy(collision.gameObject);
             Invoke("ResetaJogo", tempoEspera);
         }
+        else
+        {
+            Destroy(touched);
+            if (explosao != null)
+            {
+                var particulas = Instantiate(explosao, touched.transform.position,
+                    Quaternion.identity);
+            }
+
+        }
+        print("Before!");
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //if (collision.gameObject.GetComponent<JogadorComportamento>())
+        //{
+        //    // Verifica se o jogador.
+        //    if (this.isDefeatObject)
+        //    {
+        //        // Vamos esconder o jogador ao inves de destruir.
+        //        collision.gameObject.SetActive(false);
+        //        jogador = collision.gameObject;
+        //        //Destroy(collision.gameObject);
+        //        Invoke("ResetaJogo", tempoEspera);
+        //    } else
+        //    {
+        //        Destroy(this.gameObject);
+        //        if (explosao != null)
+        //        {
+        //            var particulas = Instantiate(explosao, this.transform.position,
+        //                Quaternion.identity);
+        //        }
+
+        //    }
+        //}
     }
 
     public void ObstaculoTocado()
@@ -138,20 +173,15 @@ public class ObstaculoComp : MonoBehaviour
         mr = GetComponent<MeshRenderer>();
         bc = GetComponent<BoxCollider>();
 
-
-
         if(this.isDefeatObject)
         {
-            print("If");
             this.gameObject.GetComponent<Renderer>().material = this.defeatMaterial;
         }
         else
         {
-            print("Else");
             this.gameObject.GetComponent<Renderer>().material = this.victoryMaterial;
+            
         }
-
-        print(this.isDefeatObject);
 
     }
 
