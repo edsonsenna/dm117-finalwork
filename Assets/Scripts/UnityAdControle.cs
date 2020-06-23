@@ -73,8 +73,8 @@ public class UnityAdControle : MonoBehaviour
             Advertisement.Show(opcoes);
             
         }
-        MenuPauseComp.pausado = true;
-        Time.timeScale = 0;
+        //MenuPauseComp.pausado = true;
+        //Time.timeScale = 0;
 #endif
     }
 
