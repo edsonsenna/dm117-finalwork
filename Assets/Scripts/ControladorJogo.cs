@@ -113,11 +113,10 @@ public class ControladorJogo : MonoBehaviour
         score += value;
     }
 
-    public static void DecreaseLife(int value)
+    public static void UpdateLife(int value)
     {
-        lifes -= value;
+        lifes += value;
         LifeImageComp.UpdateImage();
-        print("Vidas: " + lifes);
     }
 
     public static int GetPoints()

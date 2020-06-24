@@ -37,7 +37,7 @@ public class ObstaculoComp : MonoBehaviour
             ControladorJogo.UpdatePoints(-5);
             if (ControladorJogo.HasEnoughLifes())
             {
-                ControladorJogo.DecreaseLife(1);
+                ControladorJogo.UpdateLife(-1);
                 if (explosao != null)
                 {
                     var particulas = Instantiate(explosao, touched.transform.position,
