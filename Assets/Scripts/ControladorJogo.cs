@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
+using UnityEngine.SceneManagement;
 
 public class ControladorJogo : MonoBehaviour
 {
@@ -38,7 +40,8 @@ public class ControladorJogo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        lifes = 5;
+        score = 0;
         UnityAdControle.InitializeAds();
         proxTilePos = pontoInicial;
         proxTileRot = Quaternion.identity;
@@ -117,6 +120,11 @@ public class ControladorJogo : MonoBehaviour
     {
         lifes += value;
         LifeImageComp.UpdateImage();
+        if(lifes == 0)
+        {
+            Observable.Timer(System.TimeSpan.FromMilliseconds(500))
+              .Subscribe(_ => SceneManager.LoadScene("GameOver"));
+        }
     }
 
     public static int GetPoints()
