@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - obsSpawn
+  - ScoreText
+  - DestroySound
+  - LifeImage
   layers:
   - Default
   - TransparentFX
