@@ -30,51 +30,49 @@ public class ObstaculoComp : MonoBehaviour
 
     public void BeforeTouch(GameObject touched)
     {
+
         // Verifica se o jogador.
         if (this.isDefeatObject)
         {
+            ControladorJogo.UpdatePoints(-5);
+            if (ControladorJogo.HasEnoughLifes())
+            {
+                ControladorJogo.DecreaseLife(1);
+                if (explosao != null)
+                {
+                    var particulas = Instantiate(explosao, touched.transform.position,
+                        Quaternion.identity);
+                    DestroySoundComp.PlaySound();
+                }
+                touched.SetActive(false);
+            } else
+            {
+                touched.SetActive(false);
+                Invoke("ResetaJogo", tempoEspera);
+            }
+
             // Vamos esconder o jogador ao inves de destruir.
-            touched.SetActive(false);
+            //StartCoroutine(PlaySound(touched, true));
+            //touched.SetActive(false);
             //Destroy(collision.gameObject);
-            Invoke("ResetaJogo", tempoEspera);
+
+            //Invoke("ResetaJogo", tempoEspera);
         }
         else
         {
-            Destroy(touched);
+            ControladorJogo.UpdatePoints(5);
+            //StartCoroutine(PlaySound(touched, true));
             if (explosao != null)
             {
                 var particulas = Instantiate(explosao, touched.transform.position,
                     Quaternion.identity);
+                DestroySoundComp.PlaySound();
             }
-
+            touched.SetActive(false);
         }
         print("Before!");
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        //if (collision.gameObject.GetComponent<JogadorComportamento>())
-        //{
-        //    // Verifica se o jogador.
-        //    if (this.isDefeatObject)
-        //    {
-        //        // Vamos esconder o jogador ao inves de destruir.
-        //        collision.gameObject.SetActive(false);
-        //        jogador = collision.gameObject;
-        //        //Destroy(collision.gameObject);
-        //        Invoke("ResetaJogo", tempoEspera);
-        //    } else
-        //    {
-        //        Destroy(this.gameObject);
-        //        if (explosao != null)
-        //        {
-        //            var particulas = Instantiate(explosao, this.transform.position,
-        //                Quaternion.identity);
-        //        }
-
-        //    }
-        //}
-    }
 
     public void ObstaculoTocado()
     {
@@ -86,6 +84,21 @@ public class ObstaculoComp : MonoBehaviour
         mr.enabled = false;
         bc.enabled = false;
         Destroy(gameObject);
+    }
+
+    private IEnumerator PlaySound(GameObject gameObjectToPlay, bool isToHide = false)
+    {
+        gameObjectToPlay.GetComponent<AudioSource>().Play();
+        yield return new WaitWhile(() => gameObjectToPlay.GetComponent<AudioSource>().isPlaying);
+        if (isToHide)
+        {
+            gameObjectToPlay.SetActive(false);
+
+        }
+        else
+        {
+            Destroy(gameObjectToPlay);
+        }
     }
 
     private static void ClicaObjetos(Vector2 screen)

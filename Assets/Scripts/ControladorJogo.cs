@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControladorJogo : MonoBehaviour
 {
@@ -30,10 +31,14 @@ public class ControladorJogo : MonoBehaviour
     [Tooltip("Numero de tiles sem obstaculos")]
     public int numTilesSemOBS = 4;
 
+    public static int score = 0;
+
+    public static int lifes = 5;
 
     // Start is called before the first frame update
     void Start()
     {
+
         UnityAdControle.InitializeAds();
         proxTilePos = pontoInicial;
         proxTileRot = Quaternion.identity;
@@ -101,5 +106,32 @@ public class ControladorJogo : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public static void UpdatePoints(int value)
+    {
+        score += value;
+    }
+
+    public static void DecreaseLife(int value)
+    {
+        lifes -= value;
+        LifeImageComp.UpdateImage();
+        print("Vidas: " + lifes);
+    }
+
+    public static int GetPoints()
+    {
+        return score;
+    }
+
+    public static int GetLifes()
+    {
+        return lifes;
+    }
+
+    public static bool HasEnoughLifes()
+    {
+        return lifes > 0;
     }
 }
