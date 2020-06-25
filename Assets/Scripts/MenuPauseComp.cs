@@ -12,6 +12,12 @@ public class MenuPauseComp : MonoBehaviour
 
     public GameObject botaoPause;
 
+
+    public void ShowRewardToEarnLife()
+    {
+        UnityAdControle.ShowRewardAdToEarnLife();
+    } 
+
     /// <summary>
     /// Metodo para reiniciar a scene.
     /// </summary>
