@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UniRx;
 
 public class MenuPauseComp : MonoBehaviour
 {
@@ -11,6 +13,10 @@ public class MenuPauseComp : MonoBehaviour
     public GameObject menuPausePanel;
 
     public GameObject botaoPause;
+
+    public Button botaoGanharVida;
+
+    public static BehaviorSubject<int> handleBotaoGanharVida = new BehaviorSubject<int>(5);
 
 
     public void ShowRewardToEarnLife()
@@ -49,6 +55,22 @@ public class MenuPauseComp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        handleBotaoGanharVida
+                .AsObservable()
+                .Subscribe(lives =>
+                {
+                    print("LIVES" + lives);
+                    if(lives == 5)
+                    {
+                        botaoGanharVida.gameObject.SetActive(false);
+                        botaoGanharVida.interactable = false;
+                    } else
+                    {
+                        botaoGanharVida.gameObject.SetActive(true);
+                        botaoGanharVida.interactable = true;
+                    }
+                }).AddTo(this);
+
         //pausado = false;
         //Pause(false);
 #if !UNITY_ADS

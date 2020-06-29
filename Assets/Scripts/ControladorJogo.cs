@@ -120,6 +120,7 @@ public class ControladorJogo : MonoBehaviour
     public static void UpdateLife(int value)
     {
         lifes += value;
+        MenuPauseComp.handleBotaoGanharVida.OnNext(lifes);
         LifeImageComp.UpdateImage();
         if(lifes == 0)
         {

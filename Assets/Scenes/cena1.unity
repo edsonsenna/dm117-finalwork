@@ -309,7 +309,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Continuar (Ad)
+  m_Text: Ganhar +1 Vida (Ad)
 --- !u!222 &67912189
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -349,6 +349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuPausePanel: {fileID: 216776969}
   botaoPause: {fileID: 1076843266}
+  botaoGanharVida: {fileID: 1969129160}
 --- !u!4 &159256846
 Transform:
   m_ObjectHideFlags: 0
@@ -3098,7 +3099,7 @@ GameObject:
   - component: {fileID: 1969129160}
   - component: {fileID: 1969129159}
   m_Layer: 5
-  m_Name: BotaoContinuar
+  m_Name: BotaoGanharVida
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3193,8 +3194,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 159256845}
-        m_MethodName: Pause
-        m_Mode: 6
+        m_MethodName: ShowRewardToEarnLife
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
