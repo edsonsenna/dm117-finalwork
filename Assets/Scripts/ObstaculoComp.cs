@@ -34,7 +34,7 @@ public class ObstaculoComp : MonoBehaviour
         // Verifica se o jogador.
         if (this.isDefeatObject)
         {
-            ControladorJogo.UpdatePoints(-5);
+            ControladorJogo.UpdatePoints(-30);
             if (ControladorJogo.HasEnoughLifes())
             {
                 ControladorJogo.UpdateLife(-1);
@@ -60,7 +60,7 @@ public class ObstaculoComp : MonoBehaviour
         }
         else
         {
-            ControladorJogo.UpdatePoints(5);
+            ControladorJogo.UpdatePoints(15);
             //StartCoroutine(PlaySound(touched, true));
             if (explosao != null)
             {

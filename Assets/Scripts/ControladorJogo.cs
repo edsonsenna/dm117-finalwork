@@ -114,6 +114,7 @@ public class ControladorJogo : MonoBehaviour
     public static void UpdatePoints(int value)
     {
         score += value;
+        score = score < 0 ? 0 : score;
     }
 
     public static void UpdateLife(int value)
