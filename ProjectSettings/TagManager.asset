@@ -8,6 +8,7 @@ TagManager:
   - ScoreText
   - DestroySound
   - LifeImage
+  - Parede
   layers:
   - Default
   - TransparentFX

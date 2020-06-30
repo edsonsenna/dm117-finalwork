@@ -7,10 +7,8 @@ public class PreCollisionComp : MonoBehaviour
 
     private void OnTriggerEnter(UnityEngine.Collider collision)
     {
-
         GameObject parentTouched = this.gameObject.transform.parent.gameObject;
         parentTouched.GetComponent<ObstaculoComp>().BeforeTouch(parentTouched);
-        print("BeforeTouch");
     }
 
     // Start is called before the first frame update

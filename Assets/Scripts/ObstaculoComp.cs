@@ -28,49 +28,43 @@ public class ObstaculoComp : MonoBehaviour
     private Material victoryMaterial;
     private Material defeatMaterial;
 
+    /// <summary>
+    /// Metodo que detecta a presenca do jogador
+    /// em um colider anterior ao objeto e executa as
+    /// acoes corretas
+    /// </summary>
+    /// <param name="touched"></param>
     public void BeforeTouch(GameObject touched)
     {
-
-        // Verifica se o jogador.
-        if (this.isDefeatObject)
+        int points = this.isDefeatObject ? -30 : 15;
+        ControladorJogo.UpdatePoints(points);
+        if (this.isDefeatObject && ControladorJogo.HasEnoughLifes())
         {
-            ControladorJogo.UpdatePoints(-30);
-            if (ControladorJogo.HasEnoughLifes())
-            {
-                ControladorJogo.UpdateLife(-1);
-                if (explosao != null)
-                {
-                    var particulas = Instantiate(explosao, touched.transform.position,
-                        Quaternion.identity);
-                    DestroySoundComp.PlaySound();
-                }
-                touched.SetActive(false);
-            } else
-            {
-                touched.SetActive(false);
-                Invoke("ResetaJogo", tempoEspera);
-            }
-
-            // Vamos esconder o jogador ao inves de destruir.
-            //StartCoroutine(PlaySound(touched, true));
-            //touched.SetActive(false);
-            //Destroy(collision.gameObject);
-
-            //Invoke("ResetaJogo", tempoEspera);
+            ControladorJogo.UpdateLife(-1);
         }
         else
         {
-            ControladorJogo.UpdatePoints(15);
-            //StartCoroutine(PlaySound(touched, true));
-            if (explosao != null)
-            {
-                var particulas = Instantiate(explosao, touched.transform.position,
-                    Quaternion.identity);
-                DestroySoundComp.PlaySound();
-            }
-            touched.SetActive(false);
+            Invoke("ResetaJogo", tempoEspera);
+
         }
-        print("Before!");
+        this.MakeDestroyAnimation(touched);
+    }
+
+    /// <summary>
+    /// Metodo que cria a animacao de destruicao do objeto
+    /// e o esconde.
+    /// </summary>
+    /// <param name="touched"></param>
+    private void MakeDestroyAnimation(GameObject touched)
+    {
+        if (explosao != null)
+        {
+            var particulas = Instantiate(explosao, touched.transform.position,
+                Quaternion.identity);
+            DestroySoundComp.PlaySound();
+        }
+        touched.SetActive(false);
+
     }
 
 
@@ -148,10 +142,6 @@ public class ObstaculoComp : MonoBehaviour
         }
 
 
-
-        // reinicia o jogo (level - fase)
-        // Nao e necessario recagarregar o jogo por aqui.
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 
