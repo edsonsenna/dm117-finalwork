@@ -80,6 +80,14 @@ public class ObstaculoComp : MonoBehaviour
         Destroy(gameObject);
     }
 
+
+    /// <summary>
+    /// Co-rotina que executada o som armazenado pelo gameobject e logo em seguida
+    /// ou o esconde ou o destroi.
+    /// </summary>
+    /// <param name="gameObjectToPlay"></param>
+    /// <param name="isToHide"></param>
+    /// <returns></returns>
     private IEnumerator PlaySound(GameObject gameObjectToPlay, bool isToHide = false)
     {
         gameObjectToPlay.GetComponent<AudioSource>().Play();
