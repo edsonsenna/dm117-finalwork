@@ -59,7 +59,6 @@ public class MenuPauseComp : MonoBehaviour
                 .AsObservable()
                 .Subscribe(lives =>
                 {
-                    print("LIVES" + lives);
                     if(lives == 5)
                     {
                         botaoGanharVida.gameObject.SetActive(false);

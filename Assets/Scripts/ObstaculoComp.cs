@@ -38,15 +38,10 @@ public class ObstaculoComp : MonoBehaviour
     {
         int points = this.isDefeatObject ? -30 : 15;
         ControladorJogo.UpdatePoints(points);
-        if (this.isDefeatObject && ControladorJogo.HasEnoughLifes())
-        {
+        if (this.isDefeatObject && ControladorJogo.HasEnoughLifes()) {
             ControladorJogo.UpdateLife(-1);
         }
-        else
-        {
-            Invoke("ResetaJogo", tempoEspera);
-
-        }
+          
         this.MakeDestroyAnimation(touched);
     }
 
@@ -171,7 +166,7 @@ public class ObstaculoComp : MonoBehaviour
     /// </summary>
     GameObject GetGameOverMenu()
     {
-        return GameObject.Find("Canvas").transform.Find("MenuGameOver").gameObject;
+        return GameObject.Find("Canvas").transform.Find("MenuPause").gameObject;
     }
 
     // Start is called before the first frame update
