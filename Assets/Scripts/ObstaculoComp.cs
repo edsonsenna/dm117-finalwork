@@ -193,7 +193,6 @@ public class ObstaculoComp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if(Input.GetMouseButton(0))
         ClicaObjetos(Input.mousePosition);
     }
 }

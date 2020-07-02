@@ -19,6 +19,10 @@ public class LifeImageComp : MonoBehaviour
         
     }
 
+
+    /// <summary>
+    /// Metodo que altera a imagem das vidas do usuario.
+    /// </summary>
     public static void UpdateImage()
     {
         image.sprite = Resources.Load<Sprite>(ControladorJogo.GetLifes().ToString());

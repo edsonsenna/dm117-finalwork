@@ -5,6 +5,11 @@ using UnityEngine;
 public class PreCollisionComp : MonoBehaviour
 {
 
+    /// <summary>
+    /// Metodo que detecta colisao com o game object filho do game object
+    /// obstaculo.
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerEnter(UnityEngine.Collider collision)
     {
         GameObject parentTouched = this.gameObject.transform.parent.gameObject;

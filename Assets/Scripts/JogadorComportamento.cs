@@ -57,6 +57,11 @@
                 }
 
 
+                /// <summary>
+                /// Metodo que identifica gesto de deslizar o dedo sobre a tela
+                /// de um dispositivo movel.
+                /// </summary>
+                /// <param name="toque"></param>
                 private void SwipeTeleport(Touch toque)
                 {
                     // Verifica se esse é o ponto onde o swipe começou.

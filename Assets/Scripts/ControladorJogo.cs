@@ -42,6 +42,7 @@ public class ControladorJogo : MonoBehaviour
     {
         lifes = 5;
         score = 0;
+        MenuPauseComp.handleBotaoGanharVida.OnNext(lifes);
         UnityAdControle.InitializeAds();
         proxTilePos = pontoInicial;
         proxTileRot = Quaternion.identity;
@@ -51,6 +52,11 @@ public class ControladorJogo : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Metodo gerencia a geracao de novos tiles do prefab de tile
+    /// basico.
+    /// </summary>
+    /// <param name="spawnObstaculos"></param>
     public void SpawnProxTile(bool spawnObstaculos)
     {
         // Usa pra criar objetos no unity.
@@ -111,12 +117,21 @@ public class ControladorJogo : MonoBehaviour
         
     }
 
+
+    /// <summary>
+    /// Metodo para atualizar os pontos do jogador.
+    /// </summary>
+    /// <param name="value"></param>
     public static void UpdatePoints(int value)
     {
         score += value;
         score = score < 0 ? 0 : score;
     }
 
+    /// <summary>
+    /// Metodo para atualizar as vidas do jogador.
+    /// </summary>
+    /// <param name="value"></param>
     public static void UpdateLife(int value)
     {
         lifes += value;
@@ -143,4 +158,5 @@ public class ControladorJogo : MonoBehaviour
     {
         return lifes > 0;
     }
+
 }

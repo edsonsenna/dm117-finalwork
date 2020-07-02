@@ -15,7 +15,10 @@ public class UnityAdControle : MonoBehaviour
     //Referencia para o obstaculo
     public static ObstaculoComp obstaculo;
 
-
+    /// <summary>
+    /// Metodo que verifica se o usuario pode
+    /// assistir o ad para ganhar mais uma vida.
+    /// </summary>
     public static void ShowRewardAdToEarnLife()
     {
 #if UNITY_ADS
@@ -30,6 +33,8 @@ public class UnityAdControle : MonoBehaviour
 #endif
     }
 #if UNITY_ADS
+
+
     private static void HandleGiveLife(ShowResult result)
     {
         switch (result)
