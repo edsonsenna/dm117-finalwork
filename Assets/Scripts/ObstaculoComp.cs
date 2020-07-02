@@ -28,18 +28,40 @@ public class ObstaculoComp : MonoBehaviour
     private Material victoryMaterial;
     private Material defeatMaterial;
 
-    private void OnCollisionEnter(Collision collision)
+    /// <summary>
+    /// Metodo que detecta a presenca do jogador
+    /// em um colider anterior ao objeto e executa as
+    /// acoes corretas
+    /// </summary>
+    /// <param name="touched"></param>
+    public void BeforeTouch(GameObject touched)
     {
-        // Verifica se o jogador.
-        if (collision.gameObject.GetComponent<JogadorComportamento>())
-        {
-            // Vamos esconder o jogador ao inves de destruir.
-            collision.gameObject.SetActive(false);
-            jogador = collision.gameObject;
-            //Destroy(collision.gameObject);
-            Invoke("ResetaJogo", tempoEspera);
+        int points = this.isDefeatObject ? -30 : 15;
+        ControladorJogo.UpdatePoints(points);
+        if (this.isDefeatObject && ControladorJogo.HasEnoughLifes()) {
+            ControladorJogo.UpdateLife(-1);
         }
+          
+        this.MakeDestroyAnimation(touched);
     }
+
+    /// <summary>
+    /// Metodo que cria a animacao de destruicao do objeto
+    /// e o esconde.
+    /// </summary>
+    /// <param name="touched"></param>
+    private void MakeDestroyAnimation(GameObject touched)
+    {
+        if (explosao != null)
+        {
+            var particulas = Instantiate(explosao, touched.transform.position,
+                Quaternion.identity);
+            DestroySoundComp.PlaySound();
+        }
+        touched.SetActive(false);
+
+    }
+
 
     public void ObstaculoTocado()
     {
@@ -51,6 +73,29 @@ public class ObstaculoComp : MonoBehaviour
         mr.enabled = false;
         bc.enabled = false;
         Destroy(gameObject);
+    }
+
+
+    /// <summary>
+    /// Co-rotina que executada o som armazenado pelo gameobject e logo em seguida
+    /// ou o esconde ou o destroi.
+    /// </summary>
+    /// <param name="gameObjectToPlay"></param>
+    /// <param name="isToHide"></param>
+    /// <returns></returns>
+    private IEnumerator PlaySound(GameObject gameObjectToPlay, bool isToHide = false)
+    {
+        gameObjectToPlay.GetComponent<AudioSource>().Play();
+        yield return new WaitWhile(() => gameObjectToPlay.GetComponent<AudioSource>().isPlaying);
+        if (isToHide)
+        {
+            gameObjectToPlay.SetActive(false);
+
+        }
+        else
+        {
+            Destroy(gameObjectToPlay);
+        }
     }
 
     private static void ClicaObjetos(Vector2 screen)
@@ -100,10 +145,6 @@ public class ObstaculoComp : MonoBehaviour
         }
 
 
-
-        // reinicia o jogo (level - fase)
-        // Nao e necessario recagarregar o jogo por aqui.
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 
@@ -125,7 +166,7 @@ public class ObstaculoComp : MonoBehaviour
     /// </summary>
     GameObject GetGameOverMenu()
     {
-        return GameObject.Find("Canvas").transform.Find("MenuGameOver").gameObject;
+        return GameObject.Find("Canvas").transform.Find("MenuPause").gameObject;
     }
 
     // Start is called before the first frame update
@@ -138,8 +179,6 @@ public class ObstaculoComp : MonoBehaviour
         mr = GetComponent<MeshRenderer>();
         bc = GetComponent<BoxCollider>();
 
-
-
         if(this.isDefeatObject)
         {
             this.gameObject.GetComponent<Renderer>().material = this.defeatMaterial;
@@ -147,13 +186,13 @@ public class ObstaculoComp : MonoBehaviour
         else
         {
             this.gameObject.GetComponent<Renderer>().material = this.victoryMaterial;
+            
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // if(Input.GetMouseButton(0))
         ClicaObjetos(Input.mousePosition);
     }
 }

@@ -17,7 +17,7 @@
 
                 private const float maxVel = 10.0f;
                 private const float minVel = 0f;
-                private readonly Subject<float> adjustVelSubject = new Subject<float>();
+                    private readonly Subject<float> adjustVelSubject = new Subject<float>();
 
                 /// <summary>
                 /// Uma refrencia para o componente Rigidbody
@@ -57,6 +57,11 @@
                 }
 
 
+                /// <summary>
+                /// Metodo que identifica gesto de deslizar o dedo sobre a tela
+                /// de um dispositivo movel.
+                /// </summary>
+                /// <param name="toque"></param>
                 private void SwipeTeleport(Touch toque)
                 {
                     // Verifica se esse é o ponto onde o swipe começou.
@@ -89,8 +94,20 @@
                     }
                 }
 
-                // Start is called before the first frame update
-                void Start()
+    /// <summary>
+    /// Metodo que detecta a colisao do jogador com a parede
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag.Equals("Parede"))
+        {
+            ParedeSoundComp.PlayPopSound();
+        }
+    }
+
+    // Start is called before the first frame update
+    void Start()
                 {
                     // Obtem acesso ao componente rigidbody associado a esse game object.
                     rb = GetComponent<Rigidbody>();
@@ -103,44 +120,11 @@
                 }
 
                 /// <summary>
-                /// Metodo para identifcar se objetos foram tocados
-                /// </summary>
-                /// <param name="toque">O toque ocorrido nesse frame</param>
-                private static void TocarObjetos(Touch toque)
-                {
-                    //Convertendo a posicao do toque (Screen Space) para um Ray
-                    Ray toqueRay = Camera.main.ScreenPointToRay(toque.position);
-
-                    RaycastHit hit;
-
-                    if(Physics.Raycast(toqueRay, out hit))
-                    {
-                        hit.transform.SendMessage("ObjetoTocado", SendMessageOptions.DontRequireReceiver);
-             
-                    }
-                }
-
-                /// <summary>
-                /// Metodo invocado atraves do SendMessage(), p/ detectar q este objeto foi tocado
-                /// </summary>
-                public void ObjetoTocado()
-                {
-
-                    if(explosao != null)
-                    {
-                        var particulas = Instantiate(explosao, transform.position, Quaternion.identity);
-                        Destroy(particulas, 1.0f);
-                    }
-                    Destroy(gameObject);
-                }
-
-                /// <summary>
                 /// Manipula a aceleraçao da bolinha.
                 /// </summary>
                 private void SetVelocidadeRolamento()
                 {
                     var direcaoY = Input.GetAxis("Vertical");
-                    print(velocidadeRolamento);
                     if (direcaoY > 0)
                     {
                         if (velocidadeRolamento < maxVel)
@@ -164,8 +148,9 @@
                 // Update is called once per frame
                 void Update()
                 {
-                    //Se o jogo esta pauasado nao faça nada
-                    if(MenuPauseComp.pausado)
+
+        //Se o jogo esta pauasado nao faça nada
+        if (MenuPauseComp.pausado)
                     {
                         return;
                     }
@@ -198,10 +183,8 @@
                         if (Input.touchCount > 0)
                         {
                             Touch toque = Input.GetTouch(0);
-                            //Touch toque = Input.touches[0];
                             velocidadeHorizontal = CalculaMovimento(toque.position);
                             SwipeTeleport(toque);
-                            //TocarObjetos(toque);
                         }
                     }
       
@@ -212,6 +195,5 @@
                     forcaMovimento *= (Time.deltaTime * 60);
 
                     rb.AddForce(forcaMovimento);
-                    //rb.AddForce(velocidadeHorizontal, 0, velocidadeRolamento);
                 }
             } 

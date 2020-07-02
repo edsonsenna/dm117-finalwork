@@ -22,11 +22,19 @@ public class FimTileComportamento : MonoBehaviour
         
     }
 
+
+    /// <summary>
+    /// Metodo que detecta a colisao com game object
+    /// fim tile
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         // Ver se foi a bola q passou pelo fim do tile basico.
         if(other.GetComponent<JogadorComportamento>())
         {
+
+            ControladorJogo.UpdatePoints(5);
             // Como foi a bola q passou ali, vamos criar um tile basico no prox ponto
             // Mas esse proximo ponto esta depois do ultimo TileBasico presente na
             GameObject.FindObjectOfType<ControladorJogo>().SpawnProxTile(true);

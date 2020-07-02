@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UniRx;
+using UnityEngine.SceneManagement;
 
 public class ControladorJogo : MonoBehaviour
 {
@@ -30,10 +33,16 @@ public class ControladorJogo : MonoBehaviour
     [Tooltip("Numero de tiles sem obstaculos")]
     public int numTilesSemOBS = 4;
 
+    public static int score = 0;
+
+    public static int lifes = 5;
 
     // Start is called before the first frame update
     void Start()
     {
+        lifes = 5;
+        score = 0;
+        MenuPauseComp.handleBotaoGanharVida.OnNext(lifes);
         UnityAdControle.InitializeAds();
         proxTilePos = pontoInicial;
         proxTileRot = Quaternion.identity;
@@ -43,6 +52,11 @@ public class ControladorJogo : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Metodo gerencia a geracao de novos tiles do prefab de tile
+    /// basico.
+    /// </summary>
+    /// <param name="spawnObstaculos"></param>
     public void SpawnProxTile(bool spawnObstaculos)
     {
         // Usa pra criar objetos no unity.
@@ -102,4 +116,47 @@ public class ControladorJogo : MonoBehaviour
     {
         
     }
+
+
+    /// <summary>
+    /// Metodo para atualizar os pontos do jogador.
+    /// </summary>
+    /// <param name="value"></param>
+    public static void UpdatePoints(int value)
+    {
+        score += value;
+        score = score < 0 ? 0 : score;
+    }
+
+    /// <summary>
+    /// Metodo para atualizar as vidas do jogador.
+    /// </summary>
+    /// <param name="value"></param>
+    public static void UpdateLife(int value)
+    {
+        lifes += value;
+        MenuPauseComp.handleBotaoGanharVida.OnNext(lifes);
+        LifeImageComp.UpdateImage();
+        if(lifes == 0)
+        {
+            Observable.Timer(System.TimeSpan.FromMilliseconds(500))
+              .Subscribe(_ => SceneManager.LoadScene("GameOver"));
+        }
+    }
+
+    public static int GetPoints()
+    {
+        return score;
+    }
+
+    public static int GetLifes()
+    {
+        return lifes;
+    }
+
+    public static bool HasEnoughLifes()
+    {
+        return lifes > 0;
+    }
+
 }

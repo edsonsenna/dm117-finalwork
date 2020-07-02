@@ -15,6 +15,50 @@ public class UnityAdControle : MonoBehaviour
     //Referencia para o obstaculo
     public static ObstaculoComp obstaculo;
 
+    /// <summary>
+    /// Metodo que verifica se o usuario pode
+    /// assistir o ad para ganhar mais uma vida.
+    /// </summary>
+    public static void ShowRewardAdToEarnLife()
+    {
+#if UNITY_ADS
+        if(Advertisement.IsReady())
+        {
+            var opcoes = new ShowOptions
+            {
+                resultCallback = HandleGiveLife
+            };
+            Advertisement.Show(opcoes);
+        }
+#endif
+    }
+#if UNITY_ADS
+
+
+    private static void HandleGiveLife(ShowResult result)
+    {
+        switch (result)
+        {
+            case ShowResult.Finished:
+                if(ControladorJogo.lifes < 5)
+                {
+                    ControladorJogo.UpdateLife(1);
+                    GameObject.Find("Canvas").transform.Find("MenuPause").gameObject.SetActive(false);
+                    GameObject.Find("Canvas").transform.Find("BotaoPause").gameObject.SetActive(true);
+                }
+                break;
+            case ShowResult.Skipped:
+                Debug.Log("Ad pulado. Faz nada");
+                break;
+            case ShowResult.Failed:
+                Debug.Log("Erro no ad. Faz nada");
+                break;
+        }
+        MenuPauseComp.pausado = false;
+        Time.timeScale = 1f;
+    }
+#endif
+
 
     /// <summary>
     /// Metodo para mostrar ad com recompensa
@@ -73,8 +117,8 @@ public class UnityAdControle : MonoBehaviour
             Advertisement.Show(opcoes);
             
         }
-        MenuPauseComp.pausado = true;
-        Time.timeScale = 0;
+        //MenuPauseComp.pausado = true;
+        //Time.timeScale = 0;
 #endif
     }
 
